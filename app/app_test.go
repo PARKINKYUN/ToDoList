@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"strconv"
 	"testing"
+	"todolist/model"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -24,7 +25,7 @@ func TestTodos(t *testing.T) {
 	assert.Equal(http.StatusCreated, res.StatusCode)
 
 	// 응답 메시지의 Body 에서 값을 읽어와 todo 에 저장하여 비교
-	var todo Todo
+	var todo model.Todo
 	err = json.NewDecoder(res.Body).Decode(&todo)
 	assert.NoError(err)
 	assert.Equal(todo.Name, "Test todo")
@@ -43,7 +44,7 @@ func TestTodos(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, res.StatusCode)
 
-	todos := []*Todo{}
+	todos := []*model.Todo{}
 	err = json.NewDecoder(res.Body).Decode(&todos)
 	assert.NoError(err)
 	assert.Equal(len(todos), 2)
@@ -67,7 +68,7 @@ func TestTodos(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, res.StatusCode)
 
-	todos = []*Todo{}
+	todos = []*model.Todo{}
 	err = json.NewDecoder(res.Body).Decode(&todos)
 	assert.NoError(err)
 	assert.Equal(len(todos), 2)
@@ -89,7 +90,7 @@ func TestTodos(t *testing.T) {
 	assert.NoError(err)
 	assert.Equal(http.StatusOK, res.StatusCode)
 
-	todos = []*Todo{}
+	todos = []*model.Todo{}
 	err = json.NewDecoder(res.Body).Decode(&todos)
 	assert.NoError(err)
 	assert.Equal(len(todos), 1)
