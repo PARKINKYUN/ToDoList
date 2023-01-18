@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	mux := app.MakeHandler()
+	mux := app.MakeHandler("./test.db") // flag.args 로 변환 가능함
 	defer mux.Close()
 	n := negroni.Classic()
 	n.UseHandler(mux)

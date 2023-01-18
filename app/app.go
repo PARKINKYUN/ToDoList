@@ -62,11 +62,11 @@ func (a *AppHandler) Close() {
 	a.db.Close()
 }
 
-func MakeHandler() *AppHandler {
+func MakeHandler(filepath string) *AppHandler {
 	router := mux.NewRouter()
 	a := &AppHandler{
 		Handler: router,
-		db:      model.NewDBHandler(),
+		db:      model.NewDBHandler(filepath),
 	}
 
 	router.HandleFunc("/todos", a.getTodoListHandler).Methods("GET")

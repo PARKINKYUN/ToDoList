@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os"
 	"strconv"
 	"testing"
 	"todolist/model"
@@ -14,9 +15,13 @@ import (
 )
 
 func TestTodos(t *testing.T) {
+	os.Remove("./test.db")
 	assert := assert.New(t)
 	// 테스트 서버 open
-	ts := httptest.NewServer(MakeHandler())
+	appHandler := MakeHandler()
+	defer appHandler.Close()
+
+	ts := httptest.NewServer(appHandler)
 	defer ts.Close()
 
 	// "/todos" 경로로 "name"에 값을 넣어 POST 요청

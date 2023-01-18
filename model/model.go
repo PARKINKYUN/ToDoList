@@ -17,8 +17,6 @@ type DBHandler interface {
 	Close()
 }
 
-var handler DBHandler
-
-func NewDBHandler() DBHandler {
-	return newSqliteHandler()
+func NewDBHandler(filepath string) DBHandler {
+	return newSqliteHandler(filepath)
 }
