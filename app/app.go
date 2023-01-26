@@ -21,7 +21,7 @@ type AppHandler struct {
 	db model.DBHandler
 }
 
-func getSessionID(r *http.Request) string {
+var getSessionID = func(r *http.Request) string {
 	session, err := store.Get(r, "session")
 	if err != nil {
 		return ""
@@ -39,13 +39,15 @@ func (a *AppHandler) indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *AppHandler) getTodoListHandler(w http.ResponseWriter, r *http.Request) {
-	list := a.db.GetTodos()
+	sessionId := getSessionID(r)
+	list := a.db.GetTodos(sessionId)
 	rd.JSON(w, http.StatusOK, list)
 }
 
 func (a *AppHandler) addTodoHandler(w http.ResponseWriter, r *http.Request) {
+	sessionId := getSessionID(r)
 	name := r.FormValue("name")
-	todo := a.db.AddTodo(name)
+	todo := a.db.AddTodo(name, sessionId)
 	rd.JSON(w, http.StatusCreated, todo)
 }
 
@@ -82,8 +84,8 @@ func (a *AppHandler) Close() {
 
 func CheckSignin(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	// 사용자가 요청한 url 이 로그인 화면인 경우에는 당연히 로그인이 안되어 있으므로 예외처리해야 한다.
-	if strings.Contains(r.URL.Path, "/signin.html") ||
-		strings.Contains(r.URL.Path, "/auth/google") {
+	if strings.Contains(r.URL.Path, "/signin") ||
+		strings.Contains(r.URL.Path, "/auth") {
 		next(w, r)
 		return
 	}
