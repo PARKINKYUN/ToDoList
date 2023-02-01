@@ -1,17 +1,19 @@
 package main
 
 import (
+	"justin/todos/app"
 	"log"
 	"net/http"
-	"todolist/app"
+	"os"
 )
 
 func main() {
-	mux := app.MakeHandler("./test.db") // flag.args 로 변환 가능함
+	port := os.Getenv("PORT")
+	mux := app.MakeHandler(os.Getenv("DATABASE_URL"))
 	defer mux.Close()
 
 	log.Println("App started")
-	err := http.ListenAndServe(":3000", mux)
+	err := http.ListenAndServe(":"+port, mux)
 	if err != nil {
 		panic(err)
 	}

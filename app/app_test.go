@@ -3,13 +3,13 @@ package app
 import (
 	"encoding/json"
 	"fmt"
+	"justin/todos/model"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"os"
 	"strconv"
 	"testing"
-	"todolist/model"
 
 	"github.com/stretchr/testify/assert"
 )

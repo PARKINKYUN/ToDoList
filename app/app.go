@@ -5,7 +5,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"todolist/model"
+
+	"justin/todos/model"
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
@@ -99,14 +100,14 @@ func CheckSignin(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) 
 	http.Redirect(w, r, "/signin.html", http.StatusTemporaryRedirect)
 }
 
-func MakeHandler(filepath string) *AppHandler {
+func MakeHandler(dbConnectionString string) *AppHandler {
 	router := mux.NewRouter()
 	n := negroni.New(negroni.NewRecovery(), negroni.NewLogger(), negroni.HandlerFunc(CheckSignin), negroni.NewStatic(http.Dir("public")))
 	n.UseHandler(router)
 
 	a := &AppHandler{
 		Handler: n,
-		db:      model.NewDBHandler(filepath),
+		db:      model.NewDBHandler(dbConnectionString),
 	}
 
 	router.HandleFunc("/todos", a.getTodoListHandler).Methods("GET")
