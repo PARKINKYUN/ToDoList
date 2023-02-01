@@ -1,8 +1,11 @@
 # ToDoList using Golang server
-** deploy
+
+---
+
+## deploy
 * https://justintodos.fly.dev/
 
-** tech stack
+## tech stack
 * Golang
 * PostgreSQL
 * Javascript(+html+css)
